@@ -29,130 +29,159 @@
   \\
   \bigskip
 
-  % corresponding authorship
-  * correspondingauthor@institute.edu
+  % corresponding author
+  * frederic.mahe@cirad.fr
 
 \end{flushleft}
-
-% Please keep the abstract below 300 words
-\section*{Abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
-
-
-% Please keep the Author Summary between 150 and 200 words
-% Use first person. PLOS ONE authors please skip this step.
-% Author Summary not valid for PLOS ONE submissions.
-\section*{Author summary}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
 
 \linenumbers
 
-% Use "Eq" instead of "Equation" for equation citations.
 \section*{Introduction}
-Lorem ipsum dolor sit~\cite{bib1} amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam Eq~(\ref{eq:schemeP}) sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id.~\cite{bib2} Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
 
-\begin{eqnarray}
-\label{eq:schemeP}
-        \mathrm{P_Y} = \underbrace{H(Y_n) - H(Y_n|\mathbf{V}^{Y}_{n})}_{S_Y} + \underbrace{H(Y_n|\mathbf{V}^{Y}_{n})- H(Y_n|\mathbf{V}^{X,Y}_{n})}_{T_{X\rightarrow Y}},
-\end{eqnarray}
+Why should we care about the quality of computational biology
+software? and how can it be improved? The goal is to provide
+guidelines on how test, refactor, strengthen and modernize existing
+code (C/C++, python, R?). In short, how to improve code quality, as a
+follow up on the softwipe initiative.
 
-\section*{Materials and methods}
-\subsection*{Etiam eget sapien nibh}
+\section*{Rule 1: build a safeguard!}
 
-% For figure citations, please use "Fig" instead of "Figure".
-Nulla mi mi, Fig~\ref{fig1} venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, \nameref{S1_Video} vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
+Whether you are working on your own code, or being tasked to maintain
+an existing code base, the first order of business should be to
+document the code and to write unit tests. Your goal is to make sure
+that the code does what it is supposed to do, on all the operating
+systems it is supposed to do it on, and that it handles unexpected
+situations gracefully.
 
-% Place figure captions after the first paragraph in which they are cited.
-\begin{figure}[!h]
-\caption{{\bf Bold the figure title.}
-Figure caption text here, please use this space for the figure panel descriptions instead of using subfigure commands. A: Lorem ipsum dolor sit amet. B: Consectetur adipiscing elit.}
-\label{fig1}
-\end{figure}
+Testing is useful for refactoring, preventing regressions, and
+improving how code is written. Writing tests is also a good way to
+become a better programmer and team member. Automatic tests leave you
+with more time and energy to focus on software design. Tests can be
+written in a language different than the tested code, for example
+writting tests in bash for a compiled binary can significantly lower
+the hurdle. Testing is a dark art, but here is a quickstarter on how
+to write useful tests.
 
-% Results and Discussion can be combined.
-\section*{Results}
-Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
+Tests are not meant to find bugs, but rather to prevent bugs from
+coming back, to signal changes to the logic of your code, and to
+better document your code. First, each fixed issue in your bug tracker
+should be turned into the smallest possible test able to trigger the
+bug. These are called regression tests and are often the only
+available test suite. Second, unit tests should test all the important
+input values (null, negative, odd, even, not a number, etc.) or
+parameters accepted by your code. Integration tests should challenge
+each assertion present in the code documentation, as well as the
+complement or the oposite of each assertion. For instance, if the help
+message says that the program accepts input values between 0 and 10,
+does the program rejects values greater than 10? what about negative
+values?  Keep in mind that exhaustive testing is not possible, but
+smart testing can cover a lot of ground.
 
-% Place tables after the first paragraph in which they are cited.
-\begin{table}[!ht]
-\begin{adjustwidth}{-2.25in}{0in} % Comment out/remove adjustwidth environment if table fits in text column.
-\centering
-\caption{
-{\bf Table caption Nulla mi mi, venenatis sed ipsum varius, volutpat euismod diam.}}
-\begin{tabular}{|l+l|l|l|l|l|l|l|}
-\hline
-\multicolumn{4}{|l|}{\bf Heading1} & \multicolumn{4}{|l|}{\bf Heading2}\\ \thickhline
-$cell1 row1$ & cell2 row 1 & cell3 row 1 & cell4 row 1 & cell5 row 1 & cell6 row 1 & cell7 row 1 & cell8 row 1\\ \hline
-$cell1 row2$ & cell2 row 2 & cell3 row 2 & cell4 row 2 & cell5 row 2 & cell6 row 2 & cell7 row 2 & cell8 row 2\\ \hline
-$cell1 row3$ & cell2 row 3 & cell3 row 3 & cell4 row 3 & cell5 row 3 & cell6 row 3 & cell7 row 3 & cell8 row 3\\ \hline
-\end{tabular}
-\begin{flushleft} Table notes Phasellus venenatis, tortor nec vestibulum mattis, massa tortor interdum felis, nec pellentesque metus tortor nec nisl. Ut ornare mauris tellus, vel dapibus arcu suscipit sed.
-\end{flushleft}
-\label{table1}
-\end{adjustwidth}
-\end{table}
+Now that you have automatic tests, you can start refactoring your
+code.
 
+\section*{Rule 2: measure code coverage}
 
-%PLOS does not support heading levels beyond the 3rd (no 4th level headings).
-\subsection*{\lorem\ and \ipsum\ nunc blandit a tortor}
-\subsubsection*{3rd level heading}
-Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit. Sed non aliquet felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo justo ac dui pretium imperdiet. Sed suscipit iaculis mi at feugiat.
+find out what branches of your code your tests are missing. Find out
+dead code.
 
-\begin{enumerate}
-        \item{react}
-        \item{diffuse free particles}
-        \item{increment time by dt and go to 1}
-\end{enumerate}
+\section*{Rule 3: fuzzy input}
 
+Torture your code with unexpected input. Find corner cases,
+crashes. Modify your code to handle weird cases gracefully. Update
+your test base. Just-in-time documentation. You can't completely
+preempt the creativity of end-users.
 
-\subsection*{Sed ac quam id nisi malesuada congue}
+\section*{Rule 4: compilers/interpreters are your friends}
 
-Nulla mi mi, venenatis sed ipsum varius, volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero.
+Use all the possibilities offered by your compilers or execution
+environments. Use all available warnings (and fix them). Try different
+compilers, and different versions of each compilers (gcc and llvm at
+least) or different interpreters (python, pypy, etc.).
 
-\begin{itemize}
-        \item First bulleted item.
-        \item Second bulleted item.
-        \item Third bulleted item.
-\end{itemize}
+Compilers are getting smarter and pickier, and your code can benefit
+from that.
 
-\section*{Discussion}
-Nulla mi mi, venenatis sed ipsum varius, Table~\ref{table1} volutpat euismod diam. Proin rutrum vel massa non gravida. Quisque tempor sem et dignissim rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at justo vitae nulla elementum commodo eu id massa. In vitae diam ac augue semper tincidunt eu ut eros. Fusce fringilla erat porttitor lectus cursus, vel sagittis arcu lobortis. Aliquam in enim semper, aliquam massa id, cursus neque. Praesent faucibus semper libero~\cite{bib3}.
+Python ducumentation: Test your application with the '-W default'
+command-line option to see DeprecationWarning and
+PendingDeprecationWarning, or even with '-W error' to treat them as
+errors. Warnings Filter can be used to ignore warnings from
+third-party code.
+
+\section*{Rule 5: memory managment and concurency are hard}
+
+multi-core CPUS are the norm now. valgrind and helgrind. Find memory
+leaks, race conditions. Add new tests to your test suite.
+
+\section*{Rule 6: use analyzers}
+
+cppcheck, clang-tidy, flake8. Analyzers can automatically detect large
+classes of problems.
+
+clang-tidy can modernize for you without modifying the underlying
+logic (AST).
+
+\section*{Rule 7: refactor}
+
+The goal of refactoring is to change the underlying code but to
+preserve the software's behavior. To refactor is not to introduce new
+features or functionality changes. Refactoring should be performed
+regularly, otherwise the technical debt will accumulate.
+
+Automatic tests make it safer (safety net). Refactoring rules are:
+- less moving parts (simpler code),
+- use the STL or standard modules,
+- simplify the design (fight feature creep, remove unused),
+- move low-level actions to functions (high-level code should read
+  like English),
+- small incremental steps, rather than big leaps (tests should pass
+  all the time),
+
+Perfection is not realistic, focus on the most important parts.
+
+Java and C\# have great factoring tools, as refactoring is culturally
+more important in the industry. Easy with Java, use Reeks for Ruby.
+
+\section*{Rule 8: profile to focus your refactoring efforts}
+
+refactoring can yield performance improvements or reduced memory
+footprint (or harm it if you are not careful). It is important to
+benchmark the performances of your tool to avoid introducing
+slowdowns. It happened to me while updating swarm. I initialized a
+local variable in a loop, which doubled the runtime!
+
+Use valgrind to count the number of instructions.
+
+\section*{Rule 9: incremental improvement}
+
+do not aim for perfection.
+
+\section*{Rule 10: stay alert}
+
+Avoid code decay. Languages evolve, introducing new features and
+removing some. Keep your finger on the pulse, and check whether your
+code can or should be modernized by adopting new features or by
+replacing deprecated functions (you might want to maintain
+compatibility with older versions such as python 3.4 or C+11).
+
+For instance, check https://docs.python.org/3.9/whatsnew/3.9.html
 
 \section*{Conclusion}
 
-CO\textsubscript{2} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque. Quisque augue sem, tincidunt sit amet feugiat eget, ullamcorper sed velit.
+% Should we plot a summary workflow?
 
-Sed non aliquet felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo justo ac dui pretium imperdiet. Sed suscipit iaculis mi at feugiat. Ut neque ipsum, luctus id lacus ut, laoreet scelerisque urna. Phasellus venenatis, tortor nec vestibulum mattis, massa tortor interdum felis, nec pellentesque metus tortor nec nisl. Ut ornare mauris tellus, vel dapibus arcu suscipit sed. Nam condimentum sem eget mollis euismod. Nullam dui urna, gravida venenatis dui et, tincidunt sodales ex. Nunc est dui, sodales sed mauris nec, auctor sagittis leo. Aliquam tincidunt, ex in facilisis elementum, libero lectus luctus est, non vulputate nisl augue at dolor. For more information, see \nameref{S1_Appendix}.
+Towards an ethics charter for developpers
 
-\section*{Supporting information}
-
-% Include only the SI item label in the paragraph heading. Use the \nameref{label} command to cite SI items in the text.
-\paragraph*{S1 Fig.}
-\label{S1_Fig}
-{\bf Bold the title sentence.} Add descriptive text after the title of the item (optional).
-
-\paragraph*{S2 Fig.}
-\label{S2_Fig}
-{\bf Lorem ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
-
-\paragraph*{S1 File.}
-\label{S1_File}
-{\bf Lorem ipsum.}  Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
-
-\paragraph*{S1 Video.}
-\label{S1_Video}
-{\bf Lorem ipsum.}  Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
-
-\paragraph*{S1 Appendix.}
-\label{S1_Appendix}
-{\bf Lorem ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
-
-\paragraph*{S1 Table.}
-\label{S1_Table}
-{\bf Lorem ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+reduce the technical debt, reduce waste of hardware, time and energy
+by making well tested, reliable and efficient software.
 
 \section*{Acknowledgments}
-Cras egestas velit mauris, eu mollis turpis pellentesque sit amet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam id pretium nisi. Sed ac quam id nisi malesuada congue. Sed interdum aliquet augue, at pellentesque quam rhoncus vitae.
+
+Cras egestas velit mauris, eu mollis turpis pellentesque sit
+amet. Interdum et malesuada fames ac ante ipsum primis in
+faucibus. Nam id pretium nisi. Sed ac quam id nisi malesuada
+congue. Sed interdum aliquet augue, at pellentesque quam rhoncus
+vitae.
 
 \nolinenumbers
 
